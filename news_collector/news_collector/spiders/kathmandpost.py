@@ -1,5 +1,5 @@
 import scrapy
-
+from news_collector.items import NewsCollectorItem
 
 class KathmandpostSpider(scrapy.Spider):
     name = "kathmandpost"
@@ -17,9 +17,13 @@ class KathmandpostSpider(scrapy.Spider):
         posts = response.css('.block--morenews article')
         for post in posts:
             post_title = post.css('a h3::text').get()
-            post_url = 'https://kathmandupost.com/' + post.css('a').attrib['href']
+            post_url = 'https://kathmandupost.com' + post.css('a').attrib['href']
+            post_category = post.xpath('//*[(@id = "news-list")]//*[contains(concat( " ", @class, " " ), concat( " ", "title--line__red", " " ))]/text()').get()
 
-            yield {
-                'Title': post_title,
-                'url': post_url
-            } 
+
+            news = NewsCollectorItem()
+            news['title'] = post_title
+            news['url'] = post_url
+            news['category'] = post_category
+
+            yield news

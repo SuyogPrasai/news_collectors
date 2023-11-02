@@ -7,6 +7,6 @@ import scrapy
 
 
 class NewsCollectorItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+    title = scrapy.Field() 
+    url = scrapy.Field()
+    category = scrapy.Field()
